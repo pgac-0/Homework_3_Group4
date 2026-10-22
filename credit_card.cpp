@@ -1,4 +1,4 @@
-//implementation code for credit_card struct here
+
 #include "credit_card.h"
 #include <sstream>
 #include <iomanip>
