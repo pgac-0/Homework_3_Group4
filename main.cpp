@@ -36,7 +36,7 @@ int main()
 	// Open the product file and validate the number of products.
 	ifstream productFile("products.txt");
 	if (!productFile || !(productFile >> productCount) ||
-		productCount < 0 || productCount > 15)
+		productCount < 0 || productCount > 100)
 	{
 		cerr << "Error opening products.txt or invalid product count.\n";
 		return 1;
@@ -64,7 +64,7 @@ int main()
 	// Open the credit card file and validate the card count.
 	ifstream cardFile("credit_card.txt");
 	if (!cardFile || !(cardFile >> cardCount) ||
-		cardCount < 10 || cardCount > 15)
+		cardCount < 0 || cardCount > 100)
 	{
 		cerr << "Error opening credit_card.txt or invalid card count.\n";
 		return 1;
@@ -90,7 +90,7 @@ int main()
 	// Open the people file and validate the number of customers.
 	ifstream peopleFile("people.txt");
 	if (!peopleFile || !(peopleFile >> peopleCount) ||
-		peopleCount < 10 || peopleCount > 15)
+		peopleCount < 0 || peopleCount > 100)
 	{
 		cerr << "Error opening people.txt or invalid person count.\n";
 		return 1;
@@ -171,8 +171,20 @@ int main()
 	// Seed the random number generator using the current time.
 	srand(static_cast<unsigned int>(time(nullptr)));
 
+
+	/* Controls for how many purchase attempts are made */
+	const int maxPurchases = 13; // the maximum number of purchases that should be made (inclusive)
+	const int minPurchases = 11; // the minimum number of purchases that should be made (inclusive)
+
+	// (Logic explanation)
+	// 'rand()' generates an arbitrary number between 0 and RAND_MAX (not sure exactly what number
+	//	that is, but it's big.)
+	// To get a random number between 0 and x (inclusive), use 'rand() % (x+1)'
+
+
 	// Generate a random number of purchase attempts from 11 to 99.
-	const int attempts = 11 + rand() % 89;
+	//const int attempts = 11 + rand() % 89;
+	const int attempts = minPurchases + (rand() % ((maxPurchases - minPurchases) + 1));
 
 	// Counters for successful and unsuccessful purchases.
 	int approvedCount = 0;
@@ -197,15 +209,31 @@ int main()
 		Person customer = store1.get_customer(customerIndex);
 		product item = store1.get_product(productIndex);
 
+		/* The totalCost variable was only included in the 'Attempt information' text
+			(see below), and the code doesn't like that totalCost is declared but
+			not used.*/
+		/*
 		// Calculate the total purchase cost.
 		double totalCost = item.price * quantity;
+		*/
 
+		/* The 'Attempt information' directly below this is somewhat redundant,
+			it's not included in the example formatting, and it makes the output
+			harder to read.
+			It may have been useful for testing, but for the final version of
+			the code, don't include it in the output. */
+			
+			// The 'transaction number' of successful transactions is the first thing
+			// included in transaction details; nothing else needs to be done there
+
+		/*
 		// Display the information for the current purchase attempt.
 		cout << "\nAttempt #" << attempt + 1 << "\n";
 		cout << "Customer: " << customer.name() << "\n";
 		cout << "Product: " << item.name << "\n";
 		cout << "Quantity: " << quantity << "\n";
 		cout << "Attempted total: $" << totalCost << "\n";
+		*/
 
 		// Attempt the purchase and check whether it was approved.
 		if (store1.make_purchase(customer, item, quantity))
