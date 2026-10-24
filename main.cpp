@@ -173,8 +173,9 @@ int main()
 
 
 	/* Controls for how many purchase attempts are made */
-	const int maxPurchases = 13; // the maximum number of purchases that should be made (inclusive)
-	const int minPurchases = 11; // the minimum number of purchases that should be made (inclusive)
+	// For final version output, minPurchases should be 10, maxPurchases should be 100.
+	const int maxPurchases = 100; // the maximum number of purchases that should be made (inclusive)
+	const int minPurchases = 10; // the minimum number of purchases that should be made (inclusive)
 
 	// (Logic explanation)
 	// 'rand()' generates an arbitrary number between 0 and RAND_MAX (not sure exactly what number
@@ -182,7 +183,7 @@ int main()
 	// To get a random number between 0 and x (inclusive), use 'rand() % (x+1)'
 
 
-	// Generate a random number of purchase attempts from 11 to 99.
+	// Generate a random number of purchase attempts from 10 to 100.
 	//const int attempts = 11 + rand() % 89;
 	const int attempts = minPurchases + (rand() % ((maxPurchases - minPurchases) + 1));
 
@@ -190,7 +191,14 @@ int main()
 	int approvedCount = 0;
 	int declinedCount = 0;
 
+	// The total number of purchase attempts made,
+	//	both successful and unsuccessful.
+	// This is not included in the example formatting, and a summary of all
+	//	the purchase attempts is printed after the last purchase attempt anyway.
+	// 	Printing it at the beginning too is redundant.
+	/*
 	cout << "\nPurchase attempts: " << attempts << "\n";
+	*/
 
 	// Display monetary amounts with two decimal places.
 	cout << fixed << setprecision(2);
@@ -267,6 +275,12 @@ int main()
 			// Display the attempted quantity and decline message.
 			cout << "Purchase Quantity: " << quantity << "\n";
 			cout << "Purchase declined (insufficient credit or invalid attempt).\n";
+
+			// Formatting - an extra empty line between this unsuccessful transaction
+			//	and the next transaction for the sake of readability.
+			// For successful transactions, this extra new line is essentially included
+			// 	in the 'transaction_info()' method, but we aren't using that method here.
+			cout << "\n";
 		}
 	}
 
